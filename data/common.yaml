@@ -1,0 +1,76 @@
+# Networking
+
+network::external: '10.1.0.0/20'
+network::external::device: 'eth0'
+network::external::ip: "%{::ipaddress_eth0}"
+
+network::internal: '192.168.255.0/24'
+network::internal::device: 'tun0'
+network::internal::ip: "%{::ipaddress_tun0}"
+
+# Base
+
+## Firewall
+
+site::firewall::policy::ipv4: 'drop'
+site::firewall::policy::ipv6: 'drop'
+site::firewall::purge: false
+site::firewall::trusted::ipv4:
+  - '10.1.0.0/20'
+  - '192.168.255.0/24'
+site::firewall::trusted::ipv6:
+  - '2605:fd00:4:1000::/64'
+
+## Packages
+
+site::packages:
+  tmux: 'latest'
+  git: 'latest'
+
+## Users
+site::users:
+  root:
+    account:
+      uid: 0
+      gid: 0
+      password: '*'
+      home: '/root'
+    ssh_authorized_users:
+      root@puppet.example.com: 'present'
+      root@cloud.example.com: 'present'
+    ssh_key:
+      type: 'rsa'
+
+# MySQL
+
+mysql::root_password: 'password'
+
+# Puppet
+
+puppet::package_ensure: '3.6.2-1puppetlabs1'
+puppet::settings:
+  server: 'puppet'
+  parser: 'future'
+  evaluator: 'current'
+  ordering: 'manifest'
+  pluginsync: true
+  logdir: '/var/log/puppet'
+  vardir: '/var/lib/puppet'
+  ssldir: '/var/lib/puppet/ssl'
+  rundir: '/var/run/puppet'
+  manifest: '/etc/puppet/modules/site/manifests/site.pp'
+
+puppet::agent::settings:
+  certname: "%{::fqdn}"
+  show_diff: true
+  splay: false
+  configtimeout: 360
+  usecacheonfailure: true
+  report: true
+  environment: "%{::environment}"
+
+puppet::master::package_ensure: '3.6.2-1puppetlabs1'
+puppet::master::servertype: 'passenger'
+puppet::master::settings:
+  ca: true
+  ssldir: '/var/lib/puppet/ssl'
