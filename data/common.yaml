@@ -37,7 +37,6 @@ site::users:
       home: '/root'
     ssh_authorized_users:
       root@puppet.example.com: 'present'
-      root@cloud.example.com: 'present'
     ssh_key:
       type: 'rsa'
 
