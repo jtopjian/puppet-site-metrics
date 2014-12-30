@@ -1,0 +1,6 @@
+# Sensu
+
+sensu::rabbitmq::host: 'rabbitmq.example.com'
+sensu::rabbitmq::user: 'sensu'
+sensu::rabbitmq::password: 'sensu'
+sensu::rabbitmq::vhost: 'monitoring'

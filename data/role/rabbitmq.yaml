@@ -1,0 +1,26 @@
+# rabbitmq config
+
+## vhosts
+rabbitmq::vhosts:
+  monitoring:
+    ensure: 'present'
+
+## users
+rabbitmq::users:
+  sensu:
+    admin: true
+    password: 'password'
+  fcarbon:
+    admin: true
+    password: 'password'
+
+## permissions
+rabbitmq::permissions:
+  'sensu@monitoring':
+    configure_permission: '.*'
+    read_permission: '.*'
+    write_permission: '.*'
+  'fcarbon@monitoring':
+    configure_permission: '.*'
+    read_permission: '.*'
+    write_permission: '.*'

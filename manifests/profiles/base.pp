@@ -2,6 +2,9 @@ class site::profiles::base {
 
   # Hiera
   $users                         = hiera_hash('site::users', {})
+  $hosts_ip                      = hiera('site::hosts::ip', $::ipaddress_eth0)
+  $hosts_global                  = hiera('site::hosts::global', false)
+  $hosts_static_hosts            = hiera('site::hosts::static_hosts', {})
   $packages                      = hiera_hash('site::packages', {})
   $packages_gems                 = hiera_hash('site::packages::gems', {})
   $packages_eggs                 = hiera_hash('site::packages::eggs', {})
@@ -18,9 +21,16 @@ class site::profiles::base {
   $sysctl_ip_local_reserve_ports = hiera_array('site::network::local_reserve_ports', [])
   $sysctl_settings               = hiera_hash('site::sysctl::settings', {})
 
+  include apt
+
   anchor { 'site::profiles::base::begin': } ->
   class { 'bass::users':
     users => $users,
+  } ->
+  class { 'bass::hosts':
+    ip           => $hosts_ip,
+    is_global    => $hosts_global,
+    static_hosts => $hosts_static_hosts,
   } ->
   class { 'bass::packages':
     packages => $packages,
