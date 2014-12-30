@@ -1,5 +1,5 @@
-node /puppet./ {
-  include site::roles::puppet_master
+node /puppet/ {
+  include site::roles::puppet_server
 }
 
 node /rabbitmq/ {

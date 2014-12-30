@@ -64,7 +64,7 @@ mysql::root_password: 'password'
 
 # Puppet
 
-puppet::package_ensure: '3.6.2-1puppetlabs1'
+puppet::package_ensure: 'latest'
 puppet::settings:
   server: 'puppet'
   parser: 'future'
@@ -75,7 +75,6 @@ puppet::settings:
   vardir: '/var/lib/puppet'
   ssldir: '/var/lib/puppet/ssl'
   rundir: '/var/run/puppet'
-  manifest: '/etc/puppet/modules/site/manifests/site.pp'
 
 puppet::agent::settings:
   certname: "%{::fqdn}"
@@ -86,8 +85,8 @@ puppet::agent::settings:
   report: true
   environment: "%{::environment}"
 
-puppet::master::package_ensure: '3.6.2-1puppetlabs1'
-puppet::master::servertype: 'passenger'
-puppet::master::settings:
+puppet::server::default_settings:
+  JAVA_ARGS: '-Xms1g -Xmx1g -XX:MaxPermSize=256m'
+puppet::server::puppet_conf_settings:
   ca: true
   ssldir: '/var/lib/puppet/ssl'
