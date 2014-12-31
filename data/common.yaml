@@ -13,7 +13,7 @@ network::internal::ip: "%{::ipaddress_eth0}"
 ## Firewall
 
 site::firewall::policy::ipv4: 'drop'
-site::firewall::policy::ipv6: 'drop'
+site::firewall::policy::ipv6: 'accept'
 site::firewall::purge: false
 site::firewall::trusted::ipv4:
   - '10.1.0.0/20'
@@ -90,3 +90,4 @@ puppet::server::default_settings:
 puppet::server::puppet_conf_settings:
   ca: true
   ssldir: '/var/lib/puppet/ssl'
+puppetdb::master::config::restart_puppet: false
